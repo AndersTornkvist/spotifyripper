@@ -233,7 +233,16 @@ class RipperThread(threading.Thread):
         for track in itrack:
                 count += 1
                 # if the track is not loaded, track.availability is not ready
-                self.ripper.load_track(track)
+                try:
+                    self.ripper.load_track(track)
+                except (KeyboardInterrupt, SystemExit):
+                    raise
+                except Exception as inst:
+                    if not args.ignoreerrors:
+                        raise
+                    print("Unexpected error: ", type(inst))
+                    print(inst)
+                    print("Skipping to next track, if in playlist")
                 if interrupt.isSet():
                     break
                 while not track.is_loaded():
