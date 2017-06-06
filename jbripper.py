@@ -243,6 +243,7 @@ class RipperThread(threading.Thread):
                     print("Unexpected error: ", type(inst))
                     print(inst)
                     print("Skipping to next track, if in playlist")
+                    continue
                 if interrupt.isSet():
                     break
                 while not track.is_loaded():
